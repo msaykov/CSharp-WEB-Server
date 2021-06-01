@@ -65,18 +65,18 @@ content-Type: text/plain; charset=UTF8
         private static async Task<string> ReadRequest(NetworkStream networkStream)
         {
             var bufferLength = 1024;
-            //var totalBytesRead = 0;
+            var totalBytesRead = 0;
             var buffer = new byte[bufferLength];
             var requestBuilder = new StringBuilder();
 
             while (networkStream.DataAvailable)
             {
                 var bytesRead = await networkStream.ReadAsync(buffer, 0, bufferLength);
-                //totalBytesRead += bytesRead;
-                //if (totalBytesRead > 10*1024)
-                //{
-                //    connection.Close();
-                //}
+                totalBytesRead += bytesRead;
+                if (totalBytesRead > 10 * 1024)
+                {
+                    throw new InvalidOperationException("Request is too large.");
+                }
                 requestBuilder.Append(Encoding.UTF8.GetString(buffer, 0, bytesRead));
             }
 
