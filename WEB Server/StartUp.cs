@@ -4,6 +4,8 @@ using System.Text;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using WebServer.Server;
+using WebServer.Server.Http;
+using WebServer.Server.Responses;
 
 namespace WEB_Server
 {
@@ -13,7 +15,10 @@ namespace WEB_Server
         {
             // http://localhost:1550
 
-            var server = new HttpServer("127.0.0.1" , 1550);
+            var server = new HttpServer(routes => routes
+            .MapGet("/", new TextResponse(@"Hello from '/'"))
+            .MapGet("/Cats", new TextResponse("<h1>Hello from Cats</h1>", "text/html"))
+            .MapGet("/Dogs", new TextResponse("<h1>Hello from Dogs</h1>", "text/html")));
             await server.Start();
 
         }
