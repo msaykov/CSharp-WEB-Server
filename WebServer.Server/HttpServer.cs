@@ -13,12 +13,15 @@ namespace WebServer.Server
         private readonly IPAddress ipAddress;
         private readonly int port;
         private readonly TcpListener listener;
+        private readonly RoutingTable routingTable;
+        
 
-        public HttpServer(string ipAddress, int port, Action<IRoutingTable> routingTable)
+        public HttpServer(string ipAddress, int port, Action<IRoutingTable> routingTableConfiguration)
         {
             this.ipAddress = IPAddress.Parse(ipAddress);
             this.port = port;
             listener = new TcpListener(this.ipAddress, port);
+            routingTableConfiguration(this.routingTable = new RoutingTable());
         }
 
         public HttpServer(int port, Action<IRoutingTable> routingTable)
@@ -46,11 +49,12 @@ namespace WebServer.Server
                 var networkStream = connection.GetStream();
 
                 var requestText = await ReadRequest(networkStream);
-                Console.WriteLine(requestText);
+                //Console.WriteLine(requestText);
 
-                //var request = HttpRequest.Parse(requestText);
+                var request = HttpRequest.Parse(requestText);
+                var response = this.routingTable.MatchRequest(request);
 
-                await WriteResponse(networkStream);
+                await WriteResponse(networkStream, response);
 
                 connection.Close();
             }
@@ -58,20 +62,20 @@ namespace WebServer.Server
 
         }
 
-        private static async Task WriteResponse(NetworkStream networkStream)
+        private static async Task WriteResponse(NetworkStream networkStream, HttpResponse response)
         {
-            var content = "Hello from the dark side , Миленчук";
-            var contentLength = Encoding.UTF8.GetByteCount(content);
+//            var content = "Hello from the dark side , Миленчук";
+//            var contentLength = Encoding.UTF8.GetByteCount(content);
 
-            var response = $@"HTTP/1.1 200 OK
-Server: My Web Server
-Date: {DateTime.UtcNow.ToString("r")}
-Content-Length: {contentLength}
-content-Type: text/plain; charset=UTF8
+//            var response = $@"HTTP/1.1 200 OK
+//Server: My Web Server
+//Date: {DateTime.UtcNow.ToString("r")}
+//Content-Length: {contentLength}
+//content-Type: text/plain; charset=UTF8
 
-{content}";
+//{content}";
 
-            var responseBytes = Encoding.UTF8.GetBytes(response);
+            var responseBytes = Encoding.UTF8.GetBytes(response.ToString());
             await networkStream.WriteAsync(responseBytes);
         }
 

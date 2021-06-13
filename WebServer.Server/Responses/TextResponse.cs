@@ -6,7 +6,8 @@ using WebServer.Server.Http;
 
 namespace WebServer.Server.Responses
 {
-    public class TextResponse : HttpResponse
+    public class TextResponse 
+        : HttpResponse
     {
 
         public TextResponse(string text, string contentType)
