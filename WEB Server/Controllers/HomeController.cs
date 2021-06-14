@@ -1,15 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using WebServer.Server.Controllers;
 using WebServer.Server.Http;
 
 namespace WEB_Server.Controllers
 {
     public class HomeController
+        : Controller
     {
-        public HttpResponse Index()
+        public HomeController(HttpRequest request) 
+            : base(request)
         {
-            return null;
         }
+
+        public HttpResponse Index()
+        => Text("Hello from Homepage");
     }
 }

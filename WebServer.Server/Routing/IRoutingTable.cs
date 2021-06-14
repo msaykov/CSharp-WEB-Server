@@ -19,6 +19,8 @@ namespace WebServer.Server.Routing
 
         IRoutingTable MapPost(string path, Func<HttpRequest, HttpResponse> responseFunction);
 
+        
+
 
     }
 }
