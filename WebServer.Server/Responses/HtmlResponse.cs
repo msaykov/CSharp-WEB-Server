@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace WebServer.Server.Responses
+﻿namespace WebServer.Server.Responses
 {
-    class HtmlResponse
+    public class HtmlResponse
+        : ContentResponse
     {
+        public HtmlResponse(string text) 
+            : base(text , "text/html; charset=UTF-8")
+        {
+        }
     }
 }

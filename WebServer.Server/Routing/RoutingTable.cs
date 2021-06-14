@@ -25,39 +25,35 @@ namespace WebServer.Server.Routing
         
     }
 
-        public IRoutingTable Map(string url, HttpMethod method, HttpResponse response)
+        public IRoutingTable Map(HttpMethod method, string path, HttpResponse response)
         {
-            return method switch
-            {
-                HttpMethod.GET => this.MapGet(url, response),
-                HttpMethod.POST => this.MapGet(url, response),
-                HttpMethod.PUT => this.MapGet(url, response),
-                HttpMethod.DELETE => this.MapGet(url, response),
-                _ => throw new InvalidOperationException($"Method '{method}' is not supported."),
-            };
-        }
-
-        public IRoutingTable MapGet(string url, HttpResponse response)
-        {
-            Guard.AgainstNull(url, nameof(url));
+            Guard.AgainstNull(path, nameof(path));
             Guard.AgainstNull(response, nameof(response));
 
-            this.routes[HttpMethod.GET][url] = response;
+            this.routes[method][path] = response;
 
             return this;
         }
 
+        public IRoutingTable MapGet(string path, HttpResponse response)
+        => Map(HttpMethod.GET, path, response);
+        
+        public IRoutingTable MapPost(string path, HttpResponse response)
+        => Map(HttpMethod.POST, path, response);
+
+
+        
         public HttpResponse MatchRequest(HttpRequest request)
         {
             var requestMethod = request.Method;
-            var requestUrl = request.Url;
+            var requestPath = request.Path;
 
-            if (!this.routes.ContainsKey(requestMethod) || !this.routes[requestMethod].ContainsKey(requestUrl))
+            if (!this.routes.ContainsKey(requestMethod) || !this.routes[requestMethod].ContainsKey(requestPath))
             {
                 return new NotFoundResponse();
             }
 
-            return this.routes[requestMethod][requestUrl];
+            return this.routes[requestMethod][requestPath];
         }
     }
 }

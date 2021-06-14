@@ -17,8 +17,8 @@ namespace WEB_Server
 
             var server = new HttpServer(routes => routes
             .MapGet("/", new TextResponse(@"Hello from '/'"))
-            .MapGet("/Cats", new TextResponse("<h1>Hello from Cats</h1>", "text/html"))
-            .MapGet("/Dogs", new TextResponse("<h1>Hello from Dogs</h1>", "text/html")));
+            .MapGet("/Cats", new HtmlResponse("<h1>Hello from Cats</h1>"))
+            .MapGet("/Dogs", new HtmlResponse("<h1>Hello from Dogs</h1>")));
             await server.Start();
 
         }
