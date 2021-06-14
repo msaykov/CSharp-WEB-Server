@@ -14,7 +14,8 @@ namespace WEB_Server
             var server = new HttpServer(routes => routes
             .MapGet<HomeController>("/", c => c.Index())
             .MapGet<AnimalsController>("/Cats", c => c.Cats())
-            .MapGet<AnimalsController>("/Dogs", c => c.Dogs()));
+            .MapGet<AnimalsController>("/Dogs", c => c.Dogs())
+            .MapGet<HomeController>("/softuni", c => c.ToSoftUni()));
             await server.Start();
 
         }

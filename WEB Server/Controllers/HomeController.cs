@@ -12,6 +12,9 @@ namespace WEB_Server.Controllers
         }
 
         public HttpResponse Index()
-        => Text("Hello from Homepage");
+            => Text("Hello from Homepage");
+
+        public HttpResponse ToSoftUni() 
+            => Redirect("https://softuni.bg");
     }
 }
