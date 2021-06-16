@@ -12,7 +12,7 @@ namespace WebServer.Server.Responses
 
         
         public TextResponse(string text) 
-            : base(text, "text/plain; charset=UTF8")
+            : base(text, HttpContentType.PlainText)
         {            
         }
     }

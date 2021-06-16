@@ -19,12 +19,15 @@ namespace WEB_Server.Controllers
             var query = this.Request.Query;
             var catName = query.ContainsKey(nameKey)
             ? query[nameKey]
-            : "the cats";
+            : "the cats Mrrrr";
             var result = $"<h1>Hello from {catName}!</h1>";
             return Html(result);
         }
 
-        public HttpResponse Dogs()
-        => Html("<h1>Hello from Dogs</h1>");
+        public HttpResponse Dogs() => View();
+
+        public HttpResponse Bunnies() => View("Rabbits");
+
+        public HttpResponse Turtles() => View("Animals/Wild/Turtles");
     }
 }

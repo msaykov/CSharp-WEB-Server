@@ -15,6 +15,8 @@ namespace WEB_Server
             .MapGet<HomeController>("/", c => c.Index())
             .MapGet<AnimalsController>("/Cats", c => c.Cats())
             .MapGet<AnimalsController>("/Dogs", c => c.Dogs())
+            .MapGet<AnimalsController>("/Turtles", c => c.Turtles())
+            .MapGet<AnimalsController>("/Bunnies", c => c.Bunnies())
             .MapGet<HomeController>("/softuni", c => c.ToSoftUni()));
             await server.Start();
 
